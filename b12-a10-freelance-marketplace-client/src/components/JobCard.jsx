@@ -12,9 +12,9 @@ export default function JobCard({ job }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         
-        {/* Category Badge on Image */}
+        {/* Category Badge - Changed from badge-secondary to custom primary-content colors */}
         <div className="absolute top-4 left-4">
-          <span className="badge badge-secondary font-black uppercase text-[10px] py-3 px-4 shadow-lg tracking-widest">
+          <span className="inline-block bg-primary-content text-primary font-black uppercase text-[10px] py-2 px-4 rounded-full shadow-lg tracking-widest border-none">
             {job.category}
           </span>
         </div>

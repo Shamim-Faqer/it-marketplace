@@ -27,7 +27,7 @@ export default function Navbar() {
   );
 
   return (
-    <header className="navbar bg-primary text-primary-content shadow-lg px-4 md:px-8 sticky top-0 z-50">
+    <header className="navbar bg-primary glass text-white font-semibold shadow-lg px-4 md:px-8 sticky top-0 z-50">
       {/* Mobile Menu (Start) */}
       <div className="navbar-start">
         <div className="dropdown">
