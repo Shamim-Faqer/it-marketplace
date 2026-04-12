@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
     });
 
     // Keep state in sync immediately after profile update.
-    setUser({ ...credential.user, displayName: name.trim(), photoURL: photoURL.trim() });
+    setUser({ ...credential.user, displayName: name.trim() });
     return credential;
   };
 
