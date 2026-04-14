@@ -19,52 +19,55 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // রেজিস্টার
+  const register = async (name, email, password, photoURL) => {
+    setLoading(true);
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(result.user, {
+      displayName: name,
+      photoURL: photoURL,
+    });
+    return result;
+  };
+
+  // লগইন
+  const login = (email, password) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  // গুগল লগইন
+  const loginWithGoogle = () => {
+    setLoading(true);
+    return signInWithPopup(auth, googleProvider);
+  };
+
+  // লগআউট
+  const logout = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  const register = async ({ name, email, password, photoURL }) => {
-    const credential = await createUserWithEmailAndPassword(auth, email.trim(), password);
-    await updateProfile(credential.user, {
-      displayName: name.trim(),
-      photoURL: photoURL.trim(),
-    });
-
-    // Keep state in sync immediately after profile update.
-    setUser({ ...credential.user, displayName: name.trim() });
-    return credential;
+  const authInfo = {
+    user,
+    loading,
+    register,
+    login,
+    loginWithGoogle,
+    logout,
   };
 
-  const login = async ({ email, password }) => {
-    const credential = await signInWithEmailAndPassword(auth, email.trim(), password);
-    return credential;
-  };
-
-  const loginWithGoogle = async () => {
-    const credential = await signInWithPopup(auth, googleProvider);
-    return credential;
-  };
-
-  const logout = async () => {
-    await signOut(auth);
-  };
-
-  const value = useMemo(
-    () => ({
-      user,
-      loading,
-      register,
-      login,
-      loginWithGoogle,
-      logout,
-    }),
-    [user, loading]
+  return (
+    <AuthContext.Provider value={authInfo}>
+      {children}
+    </AuthContext.Provider>
   );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
