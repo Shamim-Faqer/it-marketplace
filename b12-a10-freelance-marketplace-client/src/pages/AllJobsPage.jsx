@@ -16,11 +16,11 @@ export default function AllJobsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-base-200 py-8 px-4 md:px-8">
+    <div className="min-h-screen bg-primary-content py-8 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         
         {/* Page Header & Filter Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 bg-base-100 p-6 rounded-2xl shadow-sm border border-base-300">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 bg-primary-content p-6 rounded-2xl shadow-sm border border-base-300">
           <div>
             <h2 className="text-3xl font-extrabold text-primary">Explore Jobs</h2>
             <p className="text-base-content/70 mt-1">Find your next career opportunity</p>

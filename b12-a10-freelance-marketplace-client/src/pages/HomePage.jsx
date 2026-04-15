@@ -5,6 +5,7 @@ import api from "../utils/api";
 import Spinner from "../components/Spinner";
 import JobCard from "../components/JobCard";
 
+// ক্যাটাগরি ডাটা
 const categories = [
   {
     title: "Web Development",
@@ -14,7 +15,7 @@ const categories = [
   {
     title: "Graphics Design",
     count: "85+ Jobs",
-    image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=900&q=80",
+    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=900&q=80",
   },
   {
     title: "Digital Marketing",
@@ -24,18 +25,27 @@ const categories = [
   {
     title: "Video & Animation",
     count: "70+ Jobs",
-    image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=900&q=80",
+    image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80",
   },
   {
     title: "Content Creation",
     count: "60+ Jobs",
-    image: "https://images.unsplash.com/photo-1493119508027-2b584f234d6c?auto=format&fit=crop&w=900&q=80",
+    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80",
   },
   {
     title: "Local Business & SEO",
     count: "50+ Jobs",
     image: "https://images.unsplash.com/photo-1572021335469-31706a17aaef?auto=format&fit=crop&w=900&q=80",
   },
+];
+
+// পার্টনার লোগো ডাটা
+const partners = [
+  { name: "Google", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" },
+  { name: "Microsoft", logo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" },
+  { name: "Meta", logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" },
+  { name: "Amazon", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
+  { name: "Netflix", logo: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
 ];
 
 export default function HomePage() {
@@ -89,7 +99,7 @@ export default function HomePage() {
       </section>
 
       {/* --- Latest Jobs Section --- */}
-      <section className="max-w-7xl mx-auto py-16 md:py-24 px-4">
+      <section className="max-w-7xl bg-primary-content mx-auto py-16 md:py-24 px-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
           <div className="text-center sm:text-left">
             <h2 className="text-3xl md:text-4xl font-black text-base-content tracking-tight uppercase">Latest Jobs</h2>
@@ -120,11 +130,11 @@ export default function HomePage() {
       </section>
 
       {/* --- Top Categories Section --- */}
-      <section className="bg-base-100 py-16 md:py-24 px-4 shadow-inner">
+      <section className="bg-primary-content py-16 md:py-24 px-4 shadow-inner">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
              <h2 className="text-3xl md:text-4xl font-black mb-4 uppercase">Browse by Category</h2>
-             <p className="text-base-content/60 max-w-lg mx-auto italic">Explore specialized opportunities tailored to your skills</p>
+             <p className="text-base-content max-w-lg mx-auto italic">Explore specialized opportunities tailored to your skills</p>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -138,15 +148,12 @@ export default function HomePage() {
                 whileHover={{ y: -10 }}
                 className="group relative h-80 rounded-[2.5rem] overflow-hidden cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-500"
               >
-                {/* Image Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 z-10"></div>
-                
                 <img 
                   src={item.image} 
                   alt={item.title} 
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                 />
-                
                 <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
                   <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                     <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-primary-content transition-colors">{item.title}</h3>
@@ -168,14 +175,37 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* --- Partners Section --- */}
+      <section className="bg-primary-content glass py-16 border-y ">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-5xl font-bold tracking-[0.3em] text-primary mb-10">
+            Trusted by Industry Leaders
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 grayscale opacity-50 hover:grayscale-0 transition-all duration-700">
+            {partners.map((partner, idx) => (
+              <motion.img
+                key={idx}
+                src={partner.logo}
+                alt={partner.name}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="h-6 md:h-8 object-contain hover:scale-110 transition-transform cursor-pointer"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* --- About Section --- */}
-      <section className="max-w-6xl mx-auto py-20 px-4">
-        <div className="card glass bg-primary text-primary-content shadow-2xl image-full before:!bg-opacity-80 before:!bg-primary overflow-hidden rounded-[3rem]">
+      <section className="max-w-6xl bg-primary-content mx-auto py-20 px-4">
+        <div className="card glass text-primary-content shadow-2xl image-full  overflow-hidden rounded-xl">
           <figure>
-            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" alt="About IT Workly" className="w-full h-full object-cover" />
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" alt="About IT Workly" className="w-full glass h-full object-cover" />
           </figure>
           <div className="card-body items-center text-center py-16 md:py-24">
-            <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase tracking-tighter">About IT Workly</h2>
+            <h2 className="text-4xl md:text-5xl font-black mb-6 text-primary bg-primary-content rounded-2xl p-2">About IT Workly</h2>
             <p className="text-lg md:text-xl max-w-3xl opacity-90 leading-relaxed font-medium">
               We focus on transparent freelance matching, secure communication, and a simple task lifecycle from job posting to completion. Our mission is to bridge the gap between world-class talent and high-impact opportunities.
             </p>

@@ -8,24 +8,40 @@ export default function MyAcceptedTasksPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
+  // Fetching accepted tasks
   const { data: tasks = [], isLoading } = useQuery({
     queryKey: ["accepted-tasks", user?.email],
     queryFn: async () => {
+      if (!user?.email) return [];
       const res = await api.get(`/accepted-tasks?email=${user.email}`);
       return res.data;
     },
+    enabled: !!user?.email, // Only fetch if user email exists
   });
 
+  // Mutation to remove/complete task
   const { mutate: removeTask, isPending } = useMutation({
-    mutationFn: (id) => api.delete(`/accepted-tasks/${id}?email=${user.email}`),
+    mutationFn: async (id) => {
+      // Note: This permanently deletes the task from the "accepted" collection
+      return api.delete(`/accepted-tasks/${id}?email=${user.email}`);
+    },
     onSuccess: () => {
       toast.success("Task updated successfully.");
-      queryClient.invalidateQueries({ queryKey: ["accepted-tasks", user.email] });
+      // Refresh the list by invalidating the cache
+      queryClient.invalidateQueries({ queryKey: ["accepted-tasks", user?.email] });
     },
-    onError: (error) => toast.error(error?.response?.data?.message || "Operation failed."),
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "Operation failed.");
+    },
   });
 
-  if (isLoading) return <div className="flex justify-center items-center min-h-[60vh]"><Spinner /></div>;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-base-200 py-12 px-4 md:px-8">
@@ -33,8 +49,12 @@ export default function MyAcceptedTasksPage() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-4 bg-base-100 p-8 rounded-3xl shadow-sm border border-base-300">
           <div>
-            <h2 className="text-3xl md:text-4xl font-black text-primary uppercase tracking-tighter">My Accepted Tasks</h2>
-            <p className="text-base-content/60 font-medium mt-1 italic">Manage and track your active commitments</p>
+            <h2 className="text-3xl md:text-4xl font-black text-primary uppercase tracking-tighter">
+              My Accepted Tasks
+            </h2>
+            <p className="text-base-content/60 font-medium mt-1 italic">
+              Manage and track your active commitments
+            </p>
           </div>
           <div className="badge badge-primary badge-lg py-4 px-6 font-bold uppercase tracking-widest">
             Total: {tasks.length}
@@ -50,7 +70,11 @@ export default function MyAcceptedTasksPage() {
               >
                 {/* Task Cover Image */}
                 <figure className="h-48 relative">
-                  <img className="w-full h-full object-cover" src={task.coverImage} alt={task.title} />
+                  <img 
+                    className="w-full h-full object-cover" 
+                    src={task.coverImage} 
+                    alt={task.title} 
+                  />
                   <div className="absolute top-4 right-4">
                      <span className="badge badge-secondary font-black uppercase text-[10px] py-3 px-4 shadow-lg">
                        {task.category}
@@ -99,7 +123,9 @@ export default function MyAcceptedTasksPage() {
                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                </svg>
             </div>
-            <h3 className="text-2xl font-black text-base-content/40 uppercase tracking-tighter">No tasks accepted yet</h3>
+            <h3 className="text-2xl font-black text-base-content/40 uppercase tracking-tighter">
+                No tasks accepted yet
+            </h3>
             <p className="text-base-content/50 mt-2 font-medium">Head over to the jobs page to find new opportunities.</p>
           </div>
         )}

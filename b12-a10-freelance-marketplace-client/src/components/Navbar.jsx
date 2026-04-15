@@ -1,11 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
-import useTheme from "../hooks/useTheme";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -54,22 +52,6 @@ export default function Navbar() {
 
       {/* Actions (End) */}
       <div className="navbar-end gap-2">
-        <button 
-          className="btn btn-ghost btn-circle" 
-          onClick={toggleTheme}
-          title="Toggle Theme"
-        >
-          {theme === "light" ? (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-          ) : (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 18v1m9-9h1m-18 0H2m3.34 3.34l.707.707m12.728-12.728l.707.707M6.34 17.66l-.707.707M17.66 6.34l-.707.707M12 7a5 5 0 100 10 5 5 0 000-10z" />
-            </svg>
-          )}
-        </button>
-
         {!user ? (
           <div className="flex gap-2">
             <Link to="/login" className="btn btn-sm md:btn-md btn-outline border-white text-white hover:bg-white hover:text-primary">
